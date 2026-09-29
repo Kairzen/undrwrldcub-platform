@@ -1,0 +1,44 @@
+name: Lockfile sync
+
+# Reusable workflow. On a pull request, regenerates package-lock.json from package.json and commits it
+# to the PR branch when it is out of date. Lets dependency changes made without a local npm (for example
+# through the GitHub connector) land with a correct lockfile. Called from each site's platform.yml:
+#
+#   jobs:
+#     lock:
+#       uses: Kairzen/undrwrldcub-platform/.github/workflows/lock-sync.yml@main
+#       permissions:
+#         contents: write
+
+on:
+  workflow_call:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      - name: Regenerate lockfile
+        run: npm install --package-lock-only --ignore-scripts --no-audit --no-fund
+
+      - name: Commit if changed
+        run: |
+          if git diff --quiet -- package-lock.json; then echo "package-lock.json already in sync"; exit 0; fi
+          git config user.name "lock-sync[bot]"
+          git config user.email "undrwrldcub@gmail.com"
+          git add package-lock.json
+          git commit -m "Sync package-lock.json with package.json"
+          git push
+          echo "Committed a regenerated package-lock.json" >> "$GITHUB_STEP_SUMMARY"
