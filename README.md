@@ -60,13 +60,17 @@ run npm, so dependency changes it makes arrive without a new lockfile; the lock-
 
 ## New site
 
-1. Create the repo (`Kairzen/<name>`), copy `template/` into it, replace `SITE-NAME` / `SITE-TITLE`.
-2. `npm install` to create the lockfile, commit, push.
-3. Cloudflare: Workers & Pages → Create → Import a repository; build `npm run build`, deploy `npx wrangler deploy`.
-   The custom domain comes from `routes` in `wrangler.jsonc`.
-4. Add a realm card for it on undrwrldcub.com.
+Entirely cloud-side: GitHub, GitHub Actions and Cloudflare. No local machine is involved.
 
-## Local check
+1. Wes creates the empty repo `Kairzen/<name>` on github.com (the connector cannot create repos).
+2. Claude pushes `template/` (with `SITE-NAME` / `SITE-TITLE` replaced, minus the workflow file) to a branch and opens a PR.
+3. Wes adds `.github/workflows/platform.yml` to that branch from the prefilled link Claude provides.
+4. The lock-sync job generates `package-lock.json` on the PR; the drift check must pass; merge.
+5. Cloudflare dashboard: Workers & Pages → Create → Import a repository; build `npm run build`,
+   deploy `npx wrangler deploy`. The custom domain comes from `routes` in `wrangler.jsonc`.
+6. Add a realm card for it on undrwrldcub.com.
+
+## Running the check by hand (optional, any machine or sandbox)
 
 ```
 git clone https://github.com/Kairzen/undrwrldcub-platform
