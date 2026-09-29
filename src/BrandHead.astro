@@ -1,0 +1,36 @@
+---
+/**
+ * Shared <head> contents for every undrwrldcub site: charset, viewport, title,
+ * description, canonical, icons, theme colour, Open Graph, plus the platform
+ * fonts, tokens and base CSS. Put it inside <head>; add site extras via the slot.
+ */
+import './fonts.css';
+import './tokens.css';
+import './base.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+  canonical?: boolean;
+}
+const { title, description, image, canonical = true } = Astro.props;
+const site = Astro.site;
+const canonicalUrl = canonical && site ? new URL(Astro.url.pathname, site) : null;
+const ogImage = image && site ? new URL(image, site) : image;
+---
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{title}</title>
+{description && <meta name="description" content={description}>}
+{canonicalUrl && <link rel="canonical" href={canonicalUrl}>}
+<link rel="icon" href="/brand/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" href="/brand/octopus-64.png">
+<link rel="apple-touch-icon" href="/brand/apple-touch-icon.png">
+<meta name="theme-color" content="#0E0C12">
+<meta property="og:title" content={title}>
+{description && <meta property="og:description" content={description}>}
+{ogImage && <meta property="og:image" content={ogImage}>}
+<meta property="og:type" content="website">
+{ogImage && <meta name="twitter:card" content="summary_large_image">}
+<slot />

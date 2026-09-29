@@ -1,0 +1,31 @@
+---
+/**
+ * The octopus mark plus site name, for site headers. On hobby subdomains pass
+ * `home` to add a small link back to undrwrldcub.com.
+ */
+interface Props {
+  name: string;
+  byline?: string;
+  href?: string;
+  home?: boolean;
+}
+const { name, byline, href = '/', home = false } = Astro.props;
+---
+<span class="ub-mark">
+  <a class="ub-brand" href={href} aria-label={`${name} home`}>
+    <img src="/brand/octopus-64.png" alt="" width="40" height="40">
+    <span>{name}{byline && <small>{byline}</small>}</span>
+  </a>
+  {home && <a class="ub-home" href="https://undrwrldcub.com/">undrwrldcub.com</a>}
+</span>
+<style>
+  .ub-mark { display: inline-flex; align-items: center; gap: 14px; }
+  .ub-brand { display: flex; align-items: center; gap: 10px; color: var(--bright); font-family: var(--font-display); font-weight: 700; font-size: 19px; white-space: nowrap; }
+  .ub-brand:hover { color: var(--gold-hi); text-decoration: none; }
+  .ub-brand img { width: 40px; height: 40px; }
+  .ub-brand small { display: block; font-family: var(--font-ui); font-weight: 600; font-size: 12px; letter-spacing: .14em; line-height: 1; text-transform: uppercase; color: var(--muted); }
+  .ub-home { font-family: var(--font-ui); font-weight: 600; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--faint); }
+  .ub-home::before { content: '\2190\00a0'; }
+  .ub-home:hover { color: var(--gold-hi); text-decoration: none; }
+  @media (max-width: 560px) { .ub-brand small, .ub-home { display: none; } .ub-brand { font-size: 16px; } }
+</style>

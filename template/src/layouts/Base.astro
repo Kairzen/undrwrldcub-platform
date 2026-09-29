@@ -1,0 +1,31 @@
+---
+import BrandHead from '@undrwrldcub/brand/BrandHead.astro';
+import BrandMark from '@undrwrldcub/brand/BrandMark.astro';
+
+interface Props { title?: string; description?: string }
+const { title, description } = Astro.props;
+const SITE = 'SITE-TITLE';
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <BrandHead title={title ? `${title} · ${SITE}` : SITE} description={description} />
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap"><BrandMark name={SITE} byline="by Undrwrldcub" home /></div>
+  </header>
+  <main class="wrap"><slot /></main>
+  <footer class="site-footer">
+    <div class="wrap">A fan site by Undrwrldcub. Game and park names belong to their owners.</div>
+  </footer>
+</body>
+</html>
+<style is:global>
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
+  .site-header { position: sticky; top: 0; z-index: 50; background: rgba(14, 12, 18, .92); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+  .site-header .wrap { display: flex; align-items: center; height: 64px; }
+  .site-footer { margin-top: 72px; border-top: 1px solid var(--line); background: var(--bg2); color: var(--muted); font-size: 14px; }
+  .site-footer .wrap { padding-top: 28px; padding-bottom: 36px; }
+  h1 { font-family: var(--font-display); color: var(--bright); }
+</style>

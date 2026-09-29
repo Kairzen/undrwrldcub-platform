@@ -1,0 +1,34 @@
+{
+  "version": "1.0.0",
+  "node": "22",
+  "astroMajor": 5,
+  "brandPackage": "@undrwrldcub/brand",
+  "brandSource": "github:Kairzen/undrwrldcub-platform",
+  "host": "cloudflare-workers",
+  "output": "dist",
+  "buildScript": "astro build",
+  "astroConfig": {
+    "trailingSlash": "always",
+    "buildFormat": "directory",
+    "siteDomain": "undrwrldcub.com",
+    "brandIntegration": true
+  },
+  "allowedDependencies": [
+    "astro",
+    "@undrwrldcub/brand"
+  ],
+  "requiredFiles": [
+    ".nvmrc",
+    "platform.json",
+    "renovate.json",
+    ".github/workflows/platform.yml",
+    "README.md"
+  ],
+  "gitignore": [
+    "node_modules/",
+    "dist/",
+    ".astro/",
+    "public/brand/"
+  ],
+  "renovatePreset": "github>Kairzen/undrwrldcub-platform"
+}

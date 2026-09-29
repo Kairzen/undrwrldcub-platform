@@ -1,0 +1,15 @@
+// Cloudflare Workers static assets (platform baseline host). No Worker script: files only.
+// Deploy: connect this repo in Cloudflare > Workers & Pages > Create > Import a repository
+// (build command `npm run build`, deploy command `npx wrangler deploy`).
+{
+  "name": "SITE-NAME",
+  "compatibility_date": "2026-09-01",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page",
+    "html_handling": "auto-trailing-slash"
+  },
+  "routes": [
+    { "pattern": "SITE-NAME.undrwrldcub.com", "custom_domain": true }
+  ]
+}

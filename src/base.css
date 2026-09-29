@@ -1,0 +1,6 @@
+/* Minimal shared base: only rules every site agrees on. Site stylesheets build on top. */
+html { background: var(--bg); color: var(--ink); }
+body { margin: 0; font-family: var(--font-body); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+a { color: var(--violet-hi); text-decoration: none; }
+a:hover { color: var(--gold-hi); }
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; border-radius: 4px; }

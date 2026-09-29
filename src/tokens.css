@@ -1,0 +1,45 @@
+/* undrwrldcub design tokens. Change values here, never per site. */
+:root {
+  color-scheme: dark;
+
+  /* surfaces */
+  --bg: #0E0C12;
+  --bg2: #13111A;
+  --panel: #18151F;
+  --panel2: #201C29;
+  --line: #2D2838;
+  --line2: #3A3347;
+
+  /* text */
+  --ink: #E9E4EE;
+  --bright: #F6F1FA;
+  --muted: #A69DB4;
+  --faint: #756D84;
+
+  /* brand */
+  --gold: #D4A64A;
+  --gold-hi: #E6BD66;
+  --goldline: #6B5628;
+  --on-gold: #1A1408;
+  --violet: #9B6BE0;
+  --violet-hi: #B993F0;
+  --violet-bg: #231A33;
+
+  /* one accent per hobby site (matches the landing-page realm cards) */
+  --realm-forever: #D4A64A;
+  --realm-pathfinder: #E06A58;
+  --realm-riftbound: #6FB2E8;
+  --realm-lorcana: #C58BE0;
+  --realm-workshop: #5CCB86;
+  --realm-parks: #E4B45A;
+
+  /* type */
+  --font-display: 'Cinzel', Georgia, serif;
+  --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-ui: 'Barlow Semi Condensed', 'Arial Narrow', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+
+  /* shape */
+  --radius: 12px;
+  --maxw: 1240px;
+}

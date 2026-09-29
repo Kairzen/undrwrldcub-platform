@@ -1,0 +1,39 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": "Shared Renovate preset for every undrwrldcub site. Sites use: { \"extends\": [\"github>Kairzen/undrwrldcub-platform\"] }",
+  "extends": ["config:recommended"],
+  "timezone": "America/Los_Angeles",
+  "schedule": ["before 6am on monday"],
+  "dependencyDashboard": true,
+  "prHourlyLimit": 0,
+  "nvm": { "enabled": false },
+  "packageRules": [
+    {
+      "description": "Platform releases: one PR, any day. The drift check on that PR shows what the new baseline asks for.",
+      "matchPackageNames": ["@undrwrldcub/brand"],
+      "groupName": "undrwrldcub platform",
+      "schedule": ["at any time"]
+    },
+    {
+      "description": "Astro moves together across sites; majors are a baseline decision, not a site decision.",
+      "matchPackageNames": ["astro", "@astrojs/**"],
+      "groupName": "astro"
+    },
+    {
+      "matchPackageNames": ["astro"],
+      "matchUpdateTypes": ["major"],
+      "enabled": false
+    },
+    {
+      "description": "Minor and patch bumps of site-specific extras (recorded deviations) in one weekly PR.",
+      "matchUpdateTypes": ["minor", "patch"],
+      "matchPackageNames": ["*", "!astro", "!@astrojs/**", "!@undrwrldcub/brand"],
+      "matchManagers": ["npm"],
+      "groupName": "site extras"
+    },
+    {
+      "matchManagers": ["github-actions"],
+      "groupName": "github actions"
+    }
+  ]
+}

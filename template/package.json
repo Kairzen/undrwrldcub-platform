@@ -1,0 +1,14 @@
+{
+  "name": "SITE-NAME",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@undrwrldcub/brand": "github:Kairzen/undrwrldcub-platform#v1.0.0",
+    "astro": "^5.18.2"
+  }
+}

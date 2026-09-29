@@ -1,0 +1,36 @@
+{
+  "name": "@undrwrldcub/brand",
+  "version": "1.0.0",
+  "description": "Shared brand, head and Astro integration for every undrwrldcub.com site. The platform baseline version equals this package version.",
+  "type": "module",
+  "license": "UNLICENSED",
+  "repository": "github:Kairzen/undrwrldcub-platform",
+  "exports": {
+    ".": "./src/index.js",
+    "./BrandHead.astro": "./src/BrandHead.astro",
+    "./BrandMark.astro": "./src/BrandMark.astro",
+    "./fonts.css": "./src/fonts.css",
+    "./tokens.css": "./src/tokens.css",
+    "./base.css": "./src/base.css",
+    "./assets/*": "./assets/*",
+    "./baseline.json": "./baseline.json"
+  },
+  "files": [
+    "src",
+    "assets",
+    "baseline.json"
+  ],
+  "keywords": [
+    "astro-component",
+    "withastro"
+  ],
+  "peerDependencies": {
+    "astro": "^5.0.0"
+  },
+  "dependencies": {
+    "@fontsource/barlow-semi-condensed": "^5.3.0",
+    "@fontsource/cinzel": "^5.3.0",
+    "@fontsource/ibm-plex-mono": "^5.3.0",
+    "@fontsource/inter": "^5.3.0"
+  }
+}
