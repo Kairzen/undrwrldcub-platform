@@ -1,0 +1,40 @@
+name: Platform drift check
+
+# Reusable workflow. Every undrwrldcub site calls it from .github/workflows/platform.yml:
+#
+#   jobs:
+#     drift:
+#       uses: Kairzen/undrwrldcub-platform/.github/workflows/drift-check.yml@main
+#
+# The checker always runs from main; the rules come from baseline.json at the tag the site pins.
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  drift:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out site
+        uses: actions/checkout@v4
+        with:
+          path: site
+
+      - name: Check out platform
+        uses: actions/checkout@v4
+        with:
+          repository: Kairzen/undrwrldcub-platform
+          ref: main
+          path: platform
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Compare site with its pinned baseline
+        run: node platform/scripts/check-drift.mjs --site site --platform platform
