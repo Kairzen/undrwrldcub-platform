@@ -8,6 +8,7 @@ them technically in step, and makes every difference a recorded decision rather 
 | Baseline | `baseline.json` | The rules every site follows: Node, Astro major, host, build, config, allowed deps, required files |
 | Brand package | `@undrwrldcub/brand` (this repo's root) | Fonts, design tokens, base CSS, `BrandHead`, `BrandMark`, and the icon kit synced into `public/brand/` at build |
 | Drift check | `scripts/check-drift.mjs`, `.github/workflows/drift-check.yml` | Runs in every site's CI; fails on any difference not recorded in the site's `platform.json` |
+| Lockfile sync | `.github/workflows/lock-sync.yml` | On a site PR, regenerates `package-lock.json` when `package.json` changed without it, and commits the result |
 | Renovate preset | `default.json` | Weekly grouped dependency PRs; platform releases arrive as one PR per site |
 | Site template | `template/` | Starting point for a new hobby site; always passes the newest baseline |
 
@@ -54,7 +55,8 @@ are required. A deviation that stops applying is flagged as stale so the list st
 
 The Claude GitHub connector cannot write files under a repo's root `.github/workflows/` (GitHub reserves that
 for apps with the `workflows` permission). Workflow changes in this repo and in site repos are therefore
-committed by Wes (web editor or local git); Claude prepares the exact contents.
+committed by Wes (web editor or local git); Claude prepares the exact contents. The same connector cannot
+run npm, so dependency changes it makes arrive without a new lockfile; the lock-sync job fixes that on the PR.
 
 ## New site
 
