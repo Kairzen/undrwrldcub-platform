@@ -1,0 +1,67 @@
+name: Release
+
+# On every push to main:
+#   1. Materialise the brand kit into assets/ if it is missing (one-time bootstrap; no-op afterwards).
+#   2. Require package.json and baseline.json to carry the same version.
+#   3. Tag vX.Y.Z if that tag does not exist yet. Sites pin these tags; Renovate proposes the bumps.
+#   4. Run the drift check against template/, so the template always satisfies the newest baseline.
+#
+# To release: bump "version" in package.json AND baseline.json (and the pin in template/package.json), push to main.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Bootstrap brand kit (only when assets/ is missing)
+        run: |
+          if [ -f assets/octopus-512.png ]; then echo "assets/ present"; exit 0; fi
+          pip install --quiet pillow
+          python scripts/bootstrap_assets.py
+          git config user.name "platform-release[bot]"
+          git config user.email "undrwrldcub@gmail.com"
+          git add assets
+          git commit -m "Add brand kit assets"
+          git push
+
+      - name: Versions agree
+        run: |
+          P=$(node -p "require('./package.json').version")
+          B=$(node -p "require('./baseline.json').version")
+          T=$(node -p "require('./template/package.json').dependencies['@undrwrldcub/brand'].split('#v')[1]")
+          echo "package $P, baseline $B, template pin $T"
+          [ "$P" = "$B" ] && [ "$P" = "$T" ] || { echo "::error::package.json, baseline.json and template pin must all carry the same version"; exit 1; }
+          echo "VERSION=$P" >> "$GITHUB_ENV"
+
+      - name: Tag release
+        run: |
+          if git rev-parse -q --verify "refs/tags/v$VERSION" >/dev/null; then
+            echo "v$VERSION already tagged"
+          else
+            git tag "v$VERSION"
+            git push origin "v$VERSION"
+            echo "Tagged v$VERSION" >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Template satisfies the newest baseline
+        run: node scripts/check-drift.mjs --site template --platform .
