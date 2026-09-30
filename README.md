@@ -54,9 +54,10 @@ are required. A deviation that stops applying is flagged as stale so the list st
 ## Workflow files
 
 The Claude GitHub connector cannot write files under a repo's root `.github/workflows/` (GitHub reserves that
-for apps with the `workflows` permission). Workflow changes in this repo and in site repos are therefore
-committed by Wes (web editor or local git); Claude prepares the exact contents. The same connector cannot
-run npm, so dependency changes it makes arrive without a new lockfile; the lock-sync job fixes that on the PR.
+for apps with the `workflows` permission). Workflow changes are committed from a local clone in VS Code (local
+git can push them) or in the github.com web editor (Claude can drive that through Claude in Chrome). The
+connector cannot run npm either, so dependency changes it makes arrive without a new lockfile; the lock-sync job
+fixes that on the PR.
 
 ## New site
 
@@ -64,11 +65,13 @@ Entirely cloud-side: GitHub, GitHub Actions and Cloudflare. No local machine is 
 
 1. Wes creates the empty repo `Kairzen/<name>` on github.com (the connector cannot create repos).
 2. Claude pushes `template/` (with `SITE-NAME` / `SITE-TITLE` replaced, minus the workflow file) to a branch and opens a PR.
-3. Wes adds `.github/workflows/platform.yml` to that branch from the prefilled link Claude provides.
+3. The workflow file `.github/workflows/platform.yml` is added to that branch (local clone or web editor).
 4. The lock-sync job generates `package-lock.json` on the PR; the drift check must pass; merge.
 5. Cloudflare dashboard: Workers & Pages → Create → Import a repository; build `npm run build`,
    deploy `npx wrangler deploy`. The custom domain comes from `routes` in `wrangler.jsonc`.
 6. Add a realm card for it on undrwrldcub.com.
+7. Clone it next to the others in `C:\Users\WesSanford\source\undrwrldcub\`, set the repo git identity, and add
+   it to `undrwrldcub.code-workspace` (see below).
 
 ## Running the check by hand (optional, any machine or sandbox)
 
@@ -76,3 +79,19 @@ Entirely cloud-side: GitHub, GitHub Actions and Cloudflare. No local machine is 
 git clone https://github.com/Kairzen/undrwrldcub-platform
 node undrwrldcub-platform/scripts/check-drift.mjs --site path/to/site --platform undrwrldcub-platform
 ```
+
+## Local development (VS Code + Claude Code)
+
+Wess works on the sites in VS Code with the Claude Code extension. Local clones live side by side in
+`C:\Users\WesSanford\source\undrwrldcub\` (`undrwrldcub-platform`, `undrwrldcub-site`, `wow-forever-wiki`),
+opened together through `undrwrldcub.code-workspace` in that folder. Each repo carries:
+
+- `CLAUDE.md` -- project brief Claude Code reads automatically (commands, how changes ship, rules)
+- `.claude/settings.json` -- shared permission defaults (build/dev/drift-check allowed; `.env` reads denied);
+  personal overrides go in `.claude/settings.local.json`, which is git-ignored
+- `.vscode/extensions.json` (Claude Code, Astro, and Python for the wiki) and `.vscode/settings.json` (LF line
+  endings, big generated files excluded from search)
+- `.gitattributes` -- LF line endings on every OS
+
+Each clone commits as Wes Sanford <undrwrldcub@gmail.com> (repo-level git config; the global identity stays
+the IBM one). The template carries the same files, so new sites start ready for VS Code.
