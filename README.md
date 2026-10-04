@@ -70,7 +70,7 @@ Entirely cloud-side: GitHub, GitHub Actions and Cloudflare. No local machine is 
 5. Cloudflare dashboard: Workers & Pages → Create → Import a repository; build `npm run build`,
    deploy `npx wrangler deploy`. The custom domain comes from `routes` in `wrangler.jsonc`.
 6. Add a realm card for it on undrwrldcub.com.
-7. Clone it next to the others in `C:\Users\WesSanford\source\undrwrldcub\`, set the repo git identity, and add
+7. Clone it next to the others in `D:\Source\`, set the repo git identity, and add
    it to `undrwrldcub.code-workspace` (see below).
 
 ## Running the check by hand (optional, any machine or sandbox)
@@ -83,7 +83,7 @@ node undrwrldcub-platform/scripts/check-drift.mjs --site path/to/site --platform
 ## Local development (VS Code + Claude Code)
 
 Wess works on the sites in VS Code with the Claude Code extension. Local clones live side by side in
-`C:\Users\WesSanford\source\undrwrldcub\` (`undrwrldcub-platform`, `undrwrldcub-site`, `wow-forever-wiki`),
+`D:\Source\` (`undrwrldcub-platform`, `undrwrldcub-site`, `wow-forever-wiki`),
 opened together through `undrwrldcub.code-workspace` in that folder. Each repo carries:
 
 - `CLAUDE.md` -- project brief Claude Code reads automatically (commands, how changes ship, rules)
