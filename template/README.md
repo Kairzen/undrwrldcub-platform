@@ -6,5 +6,7 @@ Built from the [undrwrldcub platform](https://github.com/Kairzen/undrwrldcub-pla
 - Brand, fonts, tokens and icons come from `@undrwrldcub/brand` (pinned in `package.json`).
 - `platform.json` lists every deliberate deviation from the platform baseline.
 - `.github/workflows/platform.yml` runs the drift check on every push and PR.
+- Cloudflare Workers Builds deploys `main`; branch and PR builds produce preview URLs instead
+  (the `previews` block in `wrangler.jsonc`).
 
 Build: `npm ci && npm run build` → `dist/`, served by Cloudflare Workers static assets (`wrangler.jsonc`).

@@ -69,6 +69,8 @@ Entirely cloud-side: GitHub, GitHub Actions and Cloudflare. No local machine is 
 4. The lock-sync job generates `package-lock.json` on the PR; the drift check must pass; merge.
 5. Cloudflare dashboard: Workers & Pages → Create → Import a repository; build `npm run build`,
    deploy `npx wrangler deploy`. The custom domain comes from `routes` in `wrangler.jsonc`.
+   Branch and PR builds run `npx wrangler preview` and produce preview URLs (the `previews` block in
+   `wrangler.jsonc` enables this; `workers_dev: false` keeps the production site off workers.dev).
 6. Add a realm card for it on undrwrldcub.com.
 7. Clone it next to the others in `D:\Source\`, set the repo git identity, and add
    it to `undrwrldcub.code-workspace` (see below).
